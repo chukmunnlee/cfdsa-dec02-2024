@@ -18,13 +18,18 @@ COPY public public
 COPY views views
 
 # Install dependencies
-RUN npm ci
+RUN npm ci 
 
 ## How to run the application
 ENV APP_PORT=3000
+
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+   CMD curl http://localhost:${APP_PORT}/health
 
 # what port to expose
 EXPOSE ${APP_PORT}
 
 # command to run the application
 ENTRYPOINT node main.js
+#ENTRYPOINT [ "node", "main.js" ]
