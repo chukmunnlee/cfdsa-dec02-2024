@@ -1,0 +1,51 @@
+--- 
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+  name: codeserver-deploy 
+  namespace: codeserver 
+  labels:
+    app: codeserver
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: codeserver
+      name: codeserver-po 
+  strategy:
+    type: RollingUpdate 
+    rollingUpdate: 
+      maxSurge: 0
+      maxUnavailable: 1
+  template: 
+    metadata: 
+      name: codeserver-po 
+      labels:
+        app: codeserver
+        name: codeserver-po 
+    spec: 
+      volumes:
+      - name: src-vol 
+        persistentVolumeClaim: 
+          claimName: codeserver-pvc
+      containers:
+      - name: codeserver-container 
+        image: linuxserver/code-server:amd64-4.95.3
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - configMapRef:
+            name: codeserver-cm
+        - secretRef:
+            name: codeserver-secret
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+        - name: src-vol 
+          mountPath: /config/workspace
+        resources:
+          requests:
+            memory: 512M
+            cpu: 200m
+          limits:
+            memory: 512M
+            cpu: 200m
