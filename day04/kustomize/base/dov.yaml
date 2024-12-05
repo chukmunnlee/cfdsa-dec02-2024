@@ -5,18 +5,6 @@ metadata:
   name: dovns
 
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: dov-cm
-  namespace: dovns
-  labels:
-    app: dov 
-    name: dov-cm
-data:
-  INSTANCE_NAME: dov-bear
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,7 +14,7 @@ metadata:
     app: dov
     name: dov-deploy
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: dov

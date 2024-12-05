@@ -7,9 +7,9 @@ metadata:
   labels: 
     app: api
     name: api-ing
-    #annotations:
-    #  nginx.ingress.kubernetes.io/enable-cors: "true"
-    #  nginx.ingress.kubernetes.io/limit-rps: "5"
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    #nginx.ingress.kubernetes.io/limit-rps: "5"
 spec: 
   ingressClassName: nginx 
   rules:
